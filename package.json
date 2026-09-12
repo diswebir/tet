@@ -1,0 +1,24 @@
+{
+  "name": "tet-task-manager",
+  "version": "1.0.0",
+  "description": "مدیریت تسک‌های روزمره با رابط فارسی، راست‌چین و نصب آسان روی cPanel",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "keywords": [
+    "task-manager",
+    "persian",
+    "rtl",
+    "cpanel"
+  ],
+  "license": "UNLICENSED"
+}
