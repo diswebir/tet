@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="تِت - مدیریت تسک‌های روزمره با تایمر، زیرتسک‌ها و اعلان‌ها">
+  <meta name="theme-color" content="#2563eb">
+  <title>تِت | مدیریت تسک‌های روزمره</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="__BASE_PATH__/assets/styles.css">
+  <link rel="manifest" href="__BASE_PATH__/assets/manifest.json">
+</head>
+<body>
+  <div id="app" class="app">
+    <header class="header" role="banner">
+      <div class="header__inner">
+        <a href="__BASE_PATH__/" class="header__brand" aria-label="تِت - صفحه اصلی">
+          <svg class="header__logo" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect width="32" height="32" rx="8" fill="currentColor"/>
+            <path d="M8 12h16M8 16h12M8 20h8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <span class="header__title">تِت</span>
+        </a>
+
+        <nav class="header__nav" aria-label="ناوبری اصلی">
+          <button class="header__nav-btn" data-nav="dashboard" aria-pressed="true">داشبورد</button>
+          <button class="header__nav-btn" data-nav="tasks">تسک‌ها</button>
+          <button class="header__nav-btn" data-nav="timer">تایمر</button>
+        </nav>
+
+        <div class="header__actions">
+          <button class="header__icon-btn" id="themeToggle" aria-label="تغییر تم" title="تغییر تم">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+
+          <button class="header__icon-btn" id="notificationBtn" aria-label="اعلان‌ها" aria-expanded="false" aria-haspopup="true" title="اعلان‌ها">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="header__badge" id="notificationBadge" aria-live="polite" hidden>0</span>
+          </button>
+
+          <div class="header__user-menu" id="userMenu">
+            <button class="header__user-btn" id="userMenuBtn" aria-expanded="false" aria-haspopup="true" aria-label="منوی کاربر">
+              <span class="header__user-avatar" id="userAvatar"></span>
+              <span class="header__user-name" id="userName"></span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="header__dropdown" id="userDropdown" role="menu" hidden>
+              <div class="header__dropdown-header">
+                <span id="dropdownUserName"></span>
+                <span id="dropdownUserEmail"></span>
+              </div>
+              <hr class="header__dropdown-divider">
+              <button class="header__dropdown-item" data-action="profile" role="menuitem">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                پروفایل
+              </button>
+              <button class="header__dropdown-item" data-action="settings" role="menuitem">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                تنظیمات
+              </button>
+              <hr class="header__dropdown-divider">
+              <button class="header__dropdown-item header__dropdown-item--danger" data-action="logout" role="menuitem">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                خروج
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main" role="main">
+      <div class="main__container">
+        <section id="view-dashboard" class="view" aria-labelledby="dashboard-title">
+          <header class="view__header">
+            <h1 id="dashboard-title" class="view__title">داشبورد</h1>
+            <div class="view__actions">
+              <button class="btn btn--primary" id="quickAddTask" aria-label="افزودن تسک سریع">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                تسک جدید
+              </button>
+            </div>
+          </header>
+
+          <div class="stats-grid" role="region" aria-label="آمار تسک‌ها">
+            <article class="stat-card stat-card--total">
+              <div class="stat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+              <div class="stat-card__content">
+                <span class="stat-card__value" id="statTotal">0</span>
+                <span class="stat-card__label">کل تسک‌ها</span>
+              </div>
+            </article>
+            <article class="stat-card stat-card--pending">
+              <div class="stat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+              </div>
+              <div class="stat-card__content">
+                <span class="stat-card__value" id="statPending">0</span>
+                <span class="stat-card__label">در انتظار</span>
+              </div>
+            </article>
+            <article class="stat-card stat-card--progress">
+              <div class="stat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div>
+              <div class="stat-card__content">
+                <span class="stat-card__value" id="statInProgress">0</span>
+                <span class="stat-card__label">در حال انجام</span>
+              </div>
+            </article>
+            <article class="stat-card stat-card--completed">
+              <div class="stat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="stat-card__content">
+                <span class="stat-card__value" id="statCompleted">0</span>
+                <span class="stat-card__label">تکمیل شده</span>
+              </div>
+            </article>
+            <article class="stat-card stat-card--overdue">
+              <div class="stat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="stat-card__content">
+                <span class="stat-card__value" id="statOverdue">0</span>
+                <span class="stat-card__label">معوق</span>
+              </div>
+            </article>
+          </div>
+
+          <section class="dashboard-section" aria-labelledby="recentTasksTitle">
+            <header class="section-header">
+              <h2 id="recentTasksTitle" class="section-title">تسک‌های اخیر</h2>
+              <a href="#tasks" class="section-link" data-nav="tasks">مشاهده همه</a>
+            </header>
+            <div class="task-list" id="recentTasksList" role="list" aria-label="لیست تسک‌های اخیر"></div>
+          </section>
+
+          <section class="dashboard-section" aria-labelledby="upcomingTasksTitle">
+            <header class="section-header">
+              <h2 id="upcomingTasksTitle" class="section-title">موعدهای نزدیک</h2>
+            </header>
+            <div class="task-list" id="upcomingTasksList" role="list" aria-label="لیست تسک‌های موعد نزدیک"></div>
+          </section>
+        </section>
+
+        <section id="view-tasks" class="view" hidden aria-labelledby="tasks-title">
+          <header class="view__header">
+            <h1 id="tasks-title" class="view__title">تسک‌ها</h1>
+            <div class="view__actions">
+              <button class="btn btn--primary" id="addTaskBtn" aria-label="افزودن تسک جدید">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                تسک جدید
+              </button>
+            </div>
+          </header>
+
+          <div class="tasks-toolbar" role="search" aria-label="جستجو و فیلتر تسک‌ها">
+            <div class="tasks-toolbar__search">
+              <label for="taskSearch" class="visually-hidden">جستجوی تسک‌ها</label>
+              <svg class="tasks-toolbar__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input type="search" id="taskSearch" placeholder="جستجوی تسک‌ها..." aria-describedby="searchHint">
+              <span id="searchHint" class="visually-hidden">برای جستجو تایپ کنید</span>
+            </div>
+            <div class="tasks-toolbar__filters">
+              <select id="filterStatus" aria-label="فیلتر بر اساس وضعیت">
+                <option value="">همه وضعیت‌ها</option>
+                <option value="pending">در انتظار</option>
+                <option value="in_progress">در حال انجام</option>
+                <option value="completed">تکمیل شده</option>
+              </select>
+              <select id="filterPriority" aria-label="فیلتر بر اساس اولویت">
+                <option value="">همه اولویت‌ها</option>
+                <option value="3">بالا</option>
+                <option value="2">متوسط</option>
+                <option value="1">کم</option>
+                <option value="0">بدون اولویت</option>
+              </select>
+              <select id="sortTasks" aria-label="مرتب‌سازی">
+                <option value="created_at,DESC">جدیدترین اول</option>
+                <option value="created_at,ASC">قدیمی‌ترین اول</option>
+                <option value="due_date,ASC">نزدیک‌ترین موعد</option>
+                <option value="priority,DESC">اولویت بالا اول</option>
+                <option value="title,ASC">به ترتیب الفبا</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="task-list" id="tasksList" role="list" aria-label="لیست تسک‌ها"></div>
+        </section>
+
+        <section id="view-timer" class="view" hidden aria-labelledby="timer-title">
+          <header class="view__header">
+            <h1 id="timer-title" class="view__title">تایمر</h1>
+          </header>
+          <div class="timer-view">
+            <div class="timer-main">
+              <div class="timer-display" id="timerDisplay" role="timer" aria-live="polite" aria-label="تایمر">۰۰:۰۰:۰۰</div>
+              <div class="timer-controls">
+                <button class="btn btn--large btn--primary" id="timerStart" aria-label="شروع تایمر">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21"/></svg>
+                  شروع
+                </button>
+                <button class="btn btn--large btn--secondary" id="timerPause" aria-label="مکث تایمر" hidden>
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                  مکث
+                </button>
+                <button class="btn btn--large btn--danger" id="timerStop" aria-label="توقف و ریست تایمر" hidden>
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                  توقف
+                </button>
+                <button class="btn btn--large btn--ghost" id="timerReset" aria-label="ریست تایمر" hidden>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  ریست
+                </button>
+              </div>
+              <div class="timer-task-select">
+                <label for="timerTaskSelect" class="visually-hidden">انتخاب تسک برای تایمر</label>
+                <select id="timerTaskSelect" aria-label="تسک مرتبط با تایمر">
+                  <option value="">تایمر آزاد (بدون تسک)</option>
+                </select>
+              </div>
+            </div>
+            <div class="timer-history" aria-labelledby="timerHistoryTitle">
+              <h2 id="timerHistoryTitle" class="section-title">تاریخچه تایمرها</h2>
+              <div class="timer-history__list" id="timerHistoryList"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+      <p>تِت - مدیریت تسک‌های روزمره &copy; ۱۴۰۳</p>
+    </footer>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div class="modal" role="document">
+      <header class="modal__header">
+        <h2 id="modalTitle" class="modal__title"></h2>
+        <button class="modal__close" id="modalClose" aria-label="بستن مودال">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </header>
+      <form class="modal__body" id="modalForm" novalidate></form>
+      <footer class="modal__footer">
+        <button type="button" class="btn btn--secondary" id="modalCancel">انصراف</button>
+        <button type="submit" form="modalForm" class="btn btn--primary" id="modalSubmit"></button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="notification-panel" id="notificationPanel" role="region" aria-label="پنل اعلان‌ها" aria-hidden="true">
+    <header class="notification-panel__header">
+      <h2 class="notification-panel__title">اعلان‌ها</h2>
+      <div class="notification-panel__actions">
+        <button class="btn btn--ghost btn--sm" id="markAllRead" aria-label="همه را خوانده شده علامت بزن">همه خوانده شده</button>
+        <button class="notification-panel__close" id="notificationPanelClose" aria-label="بستن پنل اعلان‌ها">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+    <div class="notification-panel__list" id="notificationList" role="list" aria-label="لیست اعلان‌ها"></div>
+    <footer class="notification-panel__footer">
+      <a href="__BASE_PATH__/" class="notification-panel__link" data-nav="notifications">مشاهده همه اعلان‌ها</a>
+    </footer>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-label="اعلان‌های موقت"></div>
+
+  <script src="__BASE_PATH__/assets/app.js"></script>
+</body>
+</html>
